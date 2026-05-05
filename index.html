@@ -1,0 +1,545 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>open-ai.org — Open Source Automated Intelligence</title>
+    <meta name="description" content="Open source tools for automated intelligence. Infrastructure that observes, learns, and acts — so you can sleep.">
+    <style>
+        :root {
+            --bg: #0a0a0f;
+            --surface: #12121a;
+            --border: #1e1e2e;
+            --text: #e0e0e8;
+            --text-dim: #8888a0;
+            --accent: #00ff88;
+            --accent-dim: #00cc6a;
+            --purple: #8b5cf6;
+            --blue: #3b82f6;
+            --red: #ef4444;
+            --yellow: #eab308;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'SF Mono', 'Cascadia Code', 'Fira Code', monospace;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 960px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        /* Nav */
+        nav {
+            padding: 1.5rem 0;
+            border-bottom: 1px solid var(--border);
+        }
+
+        nav .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .nav-brand {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--text);
+            text-decoration: none;
+        }
+
+        .nav-brand span { color: var(--accent); }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: var(--text-dim);
+            text-decoration: none;
+            font-size: 0.85rem;
+            transition: color 0.2s;
+        }
+
+        .nav-links a:hover { color: var(--accent); }
+
+        /* Hero */
+        .hero {
+            min-height: 85vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            position: relative;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: radial-gradient(ellipse at 50% 30%, rgba(0,255,136,0.04) 0%, transparent 60%);
+            pointer-events: none;
+        }
+
+        .org-name {
+            font-size: 3.5rem;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+            margin-bottom: 0.25rem;
+        }
+
+        .org-name span { color: var(--accent); }
+
+        .subtitle {
+            font-size: 1.1rem;
+            color: var(--purple);
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            margin-bottom: 1.5rem;
+        }
+
+        .hero-desc {
+            font-size: 1.15rem;
+            color: var(--text-dim);
+            max-width: 640px;
+            margin-bottom: 2.5rem;
+            line-height: 1.7;
+        }
+
+        .cta-row {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 0.8rem 2rem;
+            border-radius: 6px;
+            text-decoration: none;
+            font-family: inherit;
+            font-size: 0.95rem;
+            font-weight: 600;
+            transition: all 0.2s;
+        }
+
+        .btn-primary {
+            background: var(--accent);
+            color: var(--bg);
+        }
+
+        .btn-primary:hover {
+            background: var(--accent-dim);
+            transform: translateY(-1px);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: var(--text);
+            border: 1px solid var(--border);
+        }
+
+        .btn-secondary:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+
+        /* Manifesto */
+        .manifesto {
+            padding: 5rem 0;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .manifesto h2 {
+            font-size: 2rem;
+            color: var(--accent);
+            margin-bottom: 1.5rem;
+        }
+
+        .manifesto-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .manifesto-item {
+            padding: 1.5rem;
+            border-left: 2px solid var(--border);
+            transition: border-color 0.2s;
+        }
+
+        .manifesto-item:hover { border-left-color: var(--accent); }
+
+        .manifesto-item h3 {
+            color: var(--text);
+            font-size: 1rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .manifesto-item p {
+            font-size: 0.85rem;
+            color: var(--text-dim);
+        }
+
+        /* Project Card */
+        .projects {
+            padding: 5rem 0;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .projects h2 {
+            font-size: 2rem;
+            color: var(--accent);
+            margin-bottom: 0.5rem;
+        }
+
+        .projects > .container > p {
+            color: var(--text-dim);
+            margin-bottom: 2rem;
+        }
+
+        .project-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 2.5rem;
+            transition: border-color 0.2s;
+        }
+
+        .project-card:hover { border-color: var(--accent); }
+
+        .project-header {
+            display: flex;
+            align-items: baseline;
+            gap: 1rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .project-name {
+            font-size: 1.8rem;
+            font-weight: 700;
+        }
+
+        .project-name span { color: var(--accent); }
+
+        .project-badge {
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--accent);
+            background: rgba(0,255,136,0.1);
+            padding: 0.2rem 0.6rem;
+            border-radius: 4px;
+        }
+
+        .project-tagline {
+            font-size: 1rem;
+            color: var(--text-dim);
+            margin-bottom: 1.5rem;
+            font-style: italic;
+        }
+
+        .project-desc {
+            font-size: 0.9rem;
+            color: var(--text-dim);
+            margin-bottom: 1.5rem;
+            max-width: 700px;
+            line-height: 1.7;
+        }
+
+        .project-features {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .project-feature {
+            padding: 1rem;
+            background: var(--bg);
+            border-radius: 6px;
+        }
+
+        .project-feature h4 {
+            font-size: 0.8rem;
+            color: var(--purple);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 0.3rem;
+        }
+
+        .project-feature p {
+            font-size: 0.8rem;
+            color: var(--text-dim);
+            margin: 0;
+        }
+
+        .project-links {
+            display: flex;
+            gap: 1rem;
+        }
+
+        /* Terminal */
+        .terminal {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 1.5rem;
+            text-align: left;
+            max-width: 700px;
+            width: 100%;
+            margin: 2rem auto 0;
+            overflow-x: auto;
+        }
+
+        .terminal-header {
+            display: flex;
+            gap: 6px;
+            margin-bottom: 1rem;
+        }
+
+        .terminal-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+        }
+
+        .terminal-dot.red { background: var(--red); }
+        .terminal-dot.yellow { background: var(--yellow); }
+        .terminal-dot.green { background: var(--accent); }
+
+        .terminal code {
+            font-size: 0.85rem;
+            line-height: 1.8;
+        }
+
+        .terminal .comment { color: var(--text-dim); }
+        .terminal .cmd { color: var(--accent); }
+        .terminal .output { color: var(--text-dim); }
+        .terminal .highlight { color: var(--purple); }
+
+        /* Origin Story */
+        .origin {
+            padding: 5rem 0;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .origin h2 {
+            font-size: 2rem;
+            color: var(--accent);
+            margin-bottom: 1.5rem;
+        }
+
+        .origin-text {
+            max-width: 700px;
+        }
+
+        .origin-text p {
+            font-size: 0.9rem;
+            color: var(--text-dim);
+            margin-bottom: 1rem;
+            line-height: 1.7;
+        }
+
+        .origin-text em {
+            color: var(--purple);
+            font-style: normal;
+        }
+
+        /* Footer */
+        footer {
+            padding: 3rem 0;
+            text-align: center;
+            color: var(--text-dim);
+            font-size: 0.85rem;
+        }
+
+        footer a {
+            color: var(--accent);
+            text-decoration: none;
+        }
+
+        footer p {
+            max-width: none;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .org-name { font-size: 2.2rem; }
+            .subtitle { font-size: 0.85rem; }
+            .hero-desc { font-size: 1rem; }
+            .manifesto-grid { grid-template-columns: 1fr; }
+            .project-features { grid-template-columns: 1fr; }
+            .cta-row { flex-direction: column; }
+            .nav-links { gap: 1rem; }
+        }
+    </style>
+</head>
+<body>
+
+<nav>
+    <div class="container">
+        <a href="/" class="nav-brand">open-<span>ai</span>.org</a>
+        <ul class="nav-links">
+            <li><a href="#projects">Projects</a></li>
+            <li><a href="#origin">About</a></li>
+            <li><a href="https://github.com/open-auto-intel">GitHub</a></li>
+        </ul>
+    </div>
+</nav>
+
+<div class="hero">
+    <div class="container">
+        <div class="org-name">open-<span>ai</span>.org</div>
+        <div class="subtitle">Open Source Automated Intelligence</div>
+        <p class="hero-desc">
+            Infrastructure should manage itself. We build open source tools
+            that observe, learn, correlate, and act &mdash; replacing manual toil
+            with automated intelligence.
+        </p>
+        <div class="cta-row">
+            <a href="https://github.com/open-auto-intel" class="btn btn-primary">View on GitHub</a>
+            <a href="#projects" class="btn btn-secondary">See Projects</a>
+        </div>
+    </div>
+</div>
+
+<section class="manifesto">
+    <div class="container">
+        <h2>What We Mean by Automated Intelligence</h2>
+        <p style="color: var(--text-dim); max-width: 700px;">
+            Not artificial intelligence that replaces humans. Automated intelligence that
+            removes the grunt work so humans can focus on what matters. The philosophy
+            isn't new &mdash; it's the same idea behind Puppet, Chef, Ansible, and Terraform.
+            We just took it further.
+        </p>
+
+        <div class="manifesto-grid">
+            <div class="manifesto-item">
+                <h3>Observe Everything</h3>
+                <p>Metrics, logs, alerts, deployments, code changes, infrastructure state. Collect signals from every source. Correlate them automatically.</p>
+            </div>
+            <div class="manifesto-item">
+                <h3>Learn Continuously</h3>
+                <p>Every resolved incident teaches a new pattern. No retraining, no fine-tuning. Patterns are deterministic, auditable, and stored in git.</p>
+            </div>
+            <div class="manifesto-item">
+                <h3>Act Safely</h3>
+                <p>Start in observation mode. Graduate to filing issues. Then creating PRs. Then auto-merging. You control the autonomy level at every step.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="projects" id="projects">
+    <div class="container">
+        <h2>Projects</h2>
+
+        <div class="project-card">
+            <div class="project-header">
+                <div class="project-name">agent-<span>neo</span></div>
+                <span class="project-badge">flagship</span>
+            </div>
+            <div class="project-tagline">
+                "You don't need to think about air, it's just there, keeping everything alive... just like Neo."
+            </div>
+            <p class="project-desc">
+                Autonomous AI SRE that learns your infrastructure and fixes it. One Go binary, no Python.
+                Drop a YAML manifest describing your environment &mdash; VCS, alerts, metrics, deploy pipelines &mdash;
+                and Neo builds the integrations, observes signals, investigates anomalies, creates fixes, and learns
+                from every resolution.
+            </p>
+
+            <div class="project-features">
+                <div class="project-feature">
+                    <h4>3-Tier Engine</h4>
+                    <p>Fast triage, focused investigation, full agentic code review. Progressive escalation.</p>
+                </div>
+                <div class="project-feature">
+                    <h4>Self-Learning</h4>
+                    <p>Signal diffing, pattern engine, semantic dedup. 1,400 signals per sweep, sub-second.</p>
+                </div>
+                <div class="project-feature">
+                    <h4>Scale</h4>
+                    <p>Workstation to 2,000 workers. SQLite to MySQL. Ollama to Claude. Your call.</p>
+                </div>
+            </div>
+
+            <div class="terminal">
+                <div class="terminal-header">
+                    <div class="terminal-dot red"></div>
+                    <div class="terminal-dot yellow"></div>
+                    <div class="terminal-dot green"></div>
+                </div>
+                <code>
+                    <span class="comment"># install</span><br>
+                    <span class="cmd">$ brew install open-auto-intel/tap/neo</span><br><br>
+                    <span class="comment"># discover your environment</span><br>
+                    <span class="cmd">$ neo init</span><br>
+                    <span class="output">Found: prometheus, grafana, github, pagerduty, jenkins</span><br>
+                    <span class="output">Generated: neo.yaml</span><br><br>
+                    <span class="comment"># let him loose</span><br>
+                    <span class="cmd">$ neo recon</span><br>
+                    <span class="output">[neo] sweep #1: 847 signals <span class="highlight">&rarr; 3 novel &rarr; 0 incidents</span></span><br>
+                    <span class="output">[neo] <span class="highlight">learned: suppress optimizer_service_down</span></span><br>
+                </code>
+            </div>
+
+            <div class="project-links" style="margin-top: 1.5rem;">
+                <a href="https://github.com/open-auto-intel/agent-neo" class="btn btn-primary">GitHub</a>
+                <a href="https://github.com/open-auto-intel/agent-neo/tree/main/_docs" class="btn btn-secondary">Docs</a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="origin" id="origin">
+    <div class="container">
+        <h2>Origin</h2>
+        <div class="origin-text">
+            <p>
+                <em>open-ai.org</em> was registered long before the other "OpenAI" existed. It stood for
+                <em>Open Source Automated Intelligence</em> &mdash; born from years of writing Puppet code
+                and automating everything that could be automated.
+            </p>
+            <p>
+                The premise was simple: infrastructure should manage itself. Configuration management
+                DSLs were the first wave. Agent Neo is the next &mdash; same philosophy, but instead of
+                declaring desired state in a DSL, you describe your environment in YAML and let an
+                AI agent observe, investigate, and converge it.
+            </p>
+            <p>
+                The domain lived, the org moved. From <em>open-ai-org</em> to <em>tensorwire</em> to
+                <em>open-auto-intel</em>. The mission never changed: build open source tools that automate
+                the intelligence layer of operations.
+            </p>
+        </div>
+    </div>
+</section>
+
+<footer>
+    <div class="container">
+        <p>
+            <a href="https://github.com/open-auto-intel">GitHub</a> &middot;
+            Apache 2.0 &middot;
+            Built with <a href="https://claude.ai">Claude</a> &middot;
+            Go
+        </p>
+        <p style="margin-top: 0.5rem; font-size: 0.75rem;">
+            Open source automated intelligence. Not artificial. Automated.
+        </p>
+    </div>
+</footer>
+
+</body>
+</html>
